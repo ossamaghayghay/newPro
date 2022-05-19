@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,33 +9,40 @@ import 'package:http/http.dart' as http;
 enum authenticationMode{singIn,singUp}
 
 class Auth extends GetxController{
-  bool passwordInVisible = true;
+   RxBool passwordInVisible = true.obs;
+   final GlobalKey<FormState> _formkey=GlobalKey();
   
+  
+   Map<String,String> authenticationData={
+     'email':'',
+     'password':'',
+   };
 
  
-  bool isLoading=false;
+  RxBool isLoading=false.obs;
   //  define auth NMode Variable
   authenticationMode authMode=authenticationMode.singIn;
   //:::::::::::::::::::::
   var authmodeSingIn=authenticationMode.singIn;
-  var authmodeSinUp=authenticationMode.singIn;
+  var authmodeSinUp=authenticationMode.singUp
+  ;
   //:::::::::::::::::::::Change Abscure Password Icon::::::::::::::::::::::::
   changeAbscureIcon()
    {
-     passwordInVisible= !passwordInVisible;
+     passwordInVisible= passwordInVisible;
 
    }
   // ::::::::Change to True::::::::::::::::
   changeStateToTrue()
   {
-    isLoading=true;
-    update();
+    isLoading=true.obs;
+    // update();
   }
   // ::::::::Change to false::::::::::::::::
   changeStateToFlase()
   {
-    isLoading=true;
-    update();
+    isLoading=true.obs;
+    // update();
   }
 
   //::::::::::::::::::::::::Switch Authentication Mode:::::::::::::::::::::::::::::::::
@@ -43,10 +51,11 @@ class Auth extends GetxController{
     if(authMode==authenticationMode.singIn)
     {
       authMode=authenticationMode.singUp;
-      update();
+      // update();
     }
     else{
        authMode=authenticationMode.singIn;
+      //  update();
     }
 
   }
@@ -82,5 +91,27 @@ class Auth extends GetxController{
    authentication( email, password, 'signUp');
    } 
 
+  // ::::::::::::::::::::::::SUBMIT::::::::::::::::::::::::
+  Future<void> submit() async
+  {
+    
+    if(!_formkey.currentState!.validate())
+    {
+      Get.snackbar('Error', 'Invalid SnackBar');
+    }
+    else{
+      _formkey.currentState!.save();
+      changeStateToTrue();
+
+      if(authMode==authmodeSingIn)
+      {
+        singIn(authenticationData['email']!, authenticationData['password']!,null);
+      }
+      else{
+        singUn(authenticationData['email']!, authenticationData['password']!,null);
+      }
+      changeStateToFlase();
+    }
+}
 
 }

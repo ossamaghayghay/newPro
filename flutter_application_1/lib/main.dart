@@ -14,8 +14,6 @@ void main() async{
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  
-  
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -35,7 +33,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-     ControllerProducts controllerProducts=Get.put(ControllerProducts( ));
+  ControllerProducts controllerProducts=Get.put(ControllerProducts( ));
   bool isLoading=true;
    @override
   void initState() {
@@ -72,8 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onRefresh: onrefresh,
         color: Colors.purple,
         child: ListView(
-      
-        children: controllerProducts.productList.map(
+          children: controllerProducts.productList.map(
           (item) => Builder(
             builder: ((ctx)=> CardWidget(
               id: item.id,
@@ -86,7 +83,6 @@ class _MyHomePageState extends State<MyHomePage> {
               )
             )
             ).toList()
-      
         ),
       )
     ),
@@ -95,13 +91,9 @@ class _MyHomePageState extends State<MyHomePage> {
       //         controllerProducts.productList[index];
       //   }),
       //   itemCount: controllerProducts.productList.length,
-
       // )
       // ,
-    
-      
        );
-    
   }
 
   Future<void> onrefresh() async {
